@@ -30,28 +30,38 @@ def days(str1,str2):
     num=(date1-date2).days
     return num
 
-#The grid (latitude and longitude) of the simulation cases
+###
+#The grid (latitude and longitude) in a fine resolution 0.5 x 0.625 degrees of the simulation cases
+#
 latitute=np.load('D:\\Geos_output\\py\\data\\nest\\latitute_nest.npy')
 longitute=np.load('D:\\Geos_output\\py\\data\\nest\\longitute_nest.npy')
 
 latitute_c=np.load('F:\\ITCZ\\nh\\latitude.npy')
 longitute_c=np.load('F:\\ITCZ\\nh\\longitude.npy')
 
+#
 #The simulation results from Geos-chem. Can be downloaded from the link. Details please find in README 
 #Ptracer_mn[day,level,latitude,longitude]
+#Note: The calculation needs the simulation with a fine resolution, 0.5 x 0.625 degrees.
+#      So data from '201912.nc4' is in a fine resolution.
+#
 AA      = xr.open_dataset("F:\\passivetracer\\w_h\\sh\\201912.nc4")
 Ptracer_mn=AA['SpeciesConc_PassiveTracer'].data
 
-#trend component from the 'intercept_finding.py'
+###
+#Trend component from the 'intercept_finding.py'. It needed to be calculated and saved after running the script.
 #trend[level,day] 
 #Note: the trend is five year decompose results, so it should be treated properly by the function 'days'. 
+#
 trend=np.load('F:\\ITCZ\\vertical\\sh\\mid_vl.npy')
 
+#
 #'2019-12-01' is the month which the Chemical Equator (CE) is calculated. 
 #This infomation should be changed in each month of interest.
 # 
 #e.g. '2019-12-01' means that it calculated the CE in December 2019,
 #and this should be consistent with the data loaded before ('201912.nc4')
+#
 
 trend_days=days('2019-12-01','2015-01-01')
 
@@ -63,7 +73,7 @@ for k in range(Ptracer_mn.shape[0]):
             ce[k,i,j]=latitute[ce_idx]
         
 
-
+###
 diff=np.empty(ce.shape,dtype=float)
 
 for k in range (ce.shape[0]):
@@ -87,6 +97,7 @@ for i in range(diff.shape[0]):
             print(x_f_min)
             ce[i,j,dif_out[k]]=ce[i,j,x_f_min]
 
+###            
 #a preliminary plot for visializing the horizontal result of CE in a level of interest       
 plt.figure()
 projection = ccrs.PlateCarree()        
