@@ -36,6 +36,8 @@ def find_nearest(array, value):
 #To load the simulation results.
 #'daily_20xx.nc4' contains the simulation results of the passive tracer in the year 20xx.
 #This is an example of the northern hemisphere cases
+#Note: The decomposing used the simulation in a coarse resolution, 2 x 2.5 degrees,
+#      so the data from 'daily_20xx.nc4' is in a coarse resolution too.
 #
     
 nh2015       = xr.open_dataset("F:\\passivetracer\\sh\\daily_2015.nc4")
